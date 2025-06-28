@@ -1,13 +1,24 @@
 package springmvc.controller;
-import javax.servlet.http.HttpServletRequest;
 
+
+import java.security.Provider.Service;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import springmvc.model.Users;
+import springmvc.service.UserService;
+
+
 @Controller
 public class HomeController {
+	
+	@Autowired
+	private UserService userService;
 	
 	@RequestMapping("/home")
 	public String hello(Model model) {
@@ -29,10 +40,10 @@ public class HomeController {
 	}
 	
 	@RequestMapping(path = "/registerForm",method = RequestMethod.POST)
-	public String handleForm(HttpServletRequest request) {
+	public String handleForm(@ModelAttribute Users users, Model model) {
 		
-		String name = request.getParameter("name");
-		System.out.println(name);
-		return "";
+		this.userService.createUser(users);
+		System.out.println(users);
+		return "index";
 	}
 }
